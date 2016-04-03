@@ -8,7 +8,8 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_toggle" tools:context="turnip.turnip.ToggleActivity"
-    android:background="@color/turnipPurple">
+    android:background="@color/turnipPurple"
+    android:padding="0dp">
 
     <Switch
         android:id="@+id/turnipToggle"
@@ -42,4 +43,13 @@
         android:layout_below="@+id/turnipToggle"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/readiness"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:background="@color/white" />
 </RelativeLayout>
