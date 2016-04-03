@@ -30,6 +30,11 @@
             android:label="@string/title_activity_log_in"
             android:theme="@style/AppTheme" >
         </activity>
+        <activity
+            android:name=".ToggleActivity"
+            android:label="@string/title_activity_toggle"
+            android:theme="@style/AppTheme" >
+        </activity>
     </application>
 
 </manifest>
