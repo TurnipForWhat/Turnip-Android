@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Turnip</string>
     <string name="action_settings">Settings</string>
+    <string name="turnipName">Turnip</string>
+    <string name="loginWithFacebook">Login with Facebook</string>
+    <string name="loginWithEmail">Login with email</string>
+    <string name="noAccountSignUp">Don\'t have an account? Sign up</string>
+    <string name="turnipForWhat">(for what?)</string>
 </resources>
