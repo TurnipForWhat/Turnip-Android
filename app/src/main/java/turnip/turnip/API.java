@@ -1,3 +1,5 @@
+package turnip.turnip;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -27,7 +29,7 @@ import java.net.URL;
 
 public class API {
     final static String TAG = "API";
-    final static String API_URL = "http://espur.jaxbot.me/api";
+    final static String API_URL = "http://databaseproject.jaxbot.me";
     final static String STATIC_URL = "http://espur.jaxbot.me/images/";
     static String authkey;
     static Context ctx = null;
@@ -45,20 +47,20 @@ public class API {
 
     public static boolean createUser(String username, String password, String email) {
         JsonObject json = new JsonObject();
-        json.addProperty("username", username);
+        json.addProperty("name", username);
         json.addProperty("password", password);
         json.addProperty("email", email);
 
         try {
-            JsonObject result = postHTTPString(API_URL + "/user/create", json);
+            JsonObject result = postHTTPString(API_URL + "/signup", json);
             if (result == null) return false;
 
             try {
-                if (!result.get("status").getAsBoolean())
+                if (!result.get("success").getAsBoolean())
                     return false;
 
                 // We're good!
-                authkey = result.get("authkey").getAsString();
+                authkey = result.get("login_token").getAsString();
                 saveAuthkey();
 
                 return true;
@@ -128,6 +130,7 @@ public class API {
 
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestProperty("Content-type", "application/json");
             urlConnection.setRequestProperty("X-X", authkey);
             try {
                 urlConnection.setDoOutput(true);

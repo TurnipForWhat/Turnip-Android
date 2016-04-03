@@ -2,6 +2,7 @@ package turnip.turnip;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         final Context context = this;
+        API.init(context);
 
 
         TextView signUp= (TextView) findViewById(R.id.signUp);
