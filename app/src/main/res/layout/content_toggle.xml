@@ -11,7 +11,7 @@
     android:background="@color/turnipPurple">
 
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/turnipToggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOn="ON"
@@ -19,7 +19,7 @@
         android:track="@drawable/track"
         android:textOff="OFF"
         android:switchMinWidth="200dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/textView6"
         android:layout_centerHorizontal="true" />
 
@@ -28,9 +28,18 @@
         android:layout_height="wrap_content"
         android:text="@string/turnipName"
         android:id="@+id/textView6"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="30dp"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notReadyTurnip"
+        android:id="@+id/readiness"
+        android:layout_below="@+id/turnipToggle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
 </RelativeLayout>

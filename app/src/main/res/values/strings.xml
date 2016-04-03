@@ -15,4 +15,6 @@
     <string name="signIn">Sign In</string>
     <string name="logIn">Log In</string>
     <string name="title_activity_toggle">ToggleActivity</string>
+    <string name="notReadyTurnip">Not ready to turn up</string>
+    <string name="readyTurnip">🔥🔥🔥for the next 6 hours</string>
 </resources>
