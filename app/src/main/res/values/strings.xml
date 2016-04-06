@@ -74,4 +74,7 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_toggle">ToggleActivity</string>
+    <string name="notReadyTurnip">Not ready to turn up</string>
+    <string name="readyTurnip">🔥🔥🔥for the next 6 hours</string>
 </resources>
