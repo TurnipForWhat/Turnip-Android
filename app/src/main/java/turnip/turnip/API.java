@@ -51,7 +51,6 @@ public class API {
         json.addProperty("password", password);
         json.addProperty("email", email);
 
-        try {
             JsonObject result = postJson(API_URL + "/signup", json);
             if (result == null) return false;
 
@@ -68,10 +67,7 @@ public class API {
                 Log.e(TAG, "createUser failed to find success");
                 return false;
             }
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "createUser failed to create JSONObject");
-        }
-        return false;
+
     }
 
     public static boolean login(String email, String password) {
@@ -92,34 +88,7 @@ public class API {
 
             return true;
         } catch (JsonIOException e) {
-            Log.e(TAG, url);
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "createUser failed to create JSONObject");
-        }
-        return false;
-    }
-
-    public static boolean login(String email, String password) {
-        JsonObject json = new JsonObject();
-        json.addProperty("email", email);
-        json.addProperty("password", password);
-
-        try {
-            JsonObject result = postJson(API_URL + "/signup", json);
-            if (result == null) return false;
-
-            if (!result.get("success").getAsBoolean())
-                return false;
-
-            // We're good!
-            authkey = result.get("login_token").getAsString();
-            saveAuthkey();
-
-            return true;
-        } catch (JsonIOException e) {
-            Log.e(TAG, url);
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "createUser failed to create JSONObject");
+            Log.e(TAG, e.toString());
         }
         return false;
     }
