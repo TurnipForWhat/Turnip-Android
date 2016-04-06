@@ -52,7 +52,7 @@ public class API {
         json.addProperty("email", email);
 
         try {
-            JsonObject result = postHTTPString(API_URL + "/signup", json);
+            JsonObject result = postJson(API_URL + "/signup", json);
             if (result == null) return false;
 
             try {
@@ -74,7 +74,53 @@ public class API {
         return false;
     }
 
-    public static boolean login(String username, String password) {
+    public static boolean login(String email, String password) {
+        JsonObject json = new JsonObject();
+        json.addProperty("email", email);
+        json.addProperty("password", password);
+
+        try {
+            JsonObject result = postJson(API_URL + "/signup", json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            // We're good!
+            authkey = result.get("login_token").getAsString();
+            saveAuthkey();
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, url);
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "createUser failed to create JSONObject");
+        }
+        return false;
+    }
+
+    public static boolean login(String email, String password) {
+        JsonObject json = new JsonObject();
+        json.addProperty("email", email);
+        json.addProperty("password", password);
+
+        try {
+            JsonObject result = postJson(API_URL + "/signup", json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            // We're good!
+            authkey = result.get("login_token").getAsString();
+            saveAuthkey();
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, url);
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "createUser failed to create JSONObject");
+        }
         return false;
     }
 
@@ -88,7 +134,7 @@ public class API {
 
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestProperty("X-X", authkey);
+            urlConnection.setRequestProperty("X-Access-Token", authkey);
             try {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JsonParser jsonParser = new JsonParser();
@@ -109,7 +155,7 @@ public class API {
 
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestProperty("X-X", authkey);
+            urlConnection.setRequestProperty("X-Access-Token", authkey);
 
             try {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -125,13 +171,12 @@ public class API {
         return null;
     }
 
-    private static JsonObject postHTTPString(String urlString, JsonObject json) throws MalformedURLException {
-        URL url = new URL(urlString);
-
+    private static JsonObject postJson(String urlString, JsonObject json) {
         try {
+            URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("Content-type", "application/json");
-            urlConnection.setRequestProperty("X-X", authkey);
+            urlConnection.setRequestProperty("X-Access-Token", authkey);
             try {
                 urlConnection.setDoOutput(true);
                 urlConnection.setChunkedStreamingMode(0);
@@ -163,7 +208,7 @@ public class API {
 
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestProperty("X-X", authkey);
+            urlConnection.setRequestProperty("X-Access-Token", authkey);
             try {
                 urlConnection.setDoOutput(true);
                 urlConnection.setChunkedStreamingMode(0);
