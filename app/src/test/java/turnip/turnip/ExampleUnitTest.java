@@ -14,7 +14,7 @@ public class ExampleUnitTest {
         API.authkey = "0.fho837tr7g7ousor";
         //assertEquals(API.createUser("jonathan", "test", "test2"), true);
         //API.login("test2", "test");
-        System.out.println(API.toggle(true));
+        System.out.println(API.toggle(false));
         UserFeed uf = API.feed();
         System.out.println(uf.status);
         System.out.println(uf.friends);
