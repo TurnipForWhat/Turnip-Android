@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
@@ -26,12 +27,13 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class API {
     final static String TAG = "API";
     final static String API_URL = "http://databaseproject.jaxbot.me";
     final static String STATIC_URL = "http://espur.jaxbot.me/images/";
-    static String authkey;
+    public static String authkey;
     static Context ctx = null;
 
     public static void init(Context ctx) {
@@ -76,7 +78,7 @@ public class API {
         json.addProperty("password", password);
 
         try {
-            JsonObject result = postJson(API_URL + "/signup", json);
+            JsonObject result = postJson(API_URL + "/login", json);
             if (result == null) return false;
 
             if (!result.get("success").getAsBoolean())
@@ -93,15 +95,54 @@ public class API {
         return false;
     }
 
+    public static boolean toggle(Boolean readyToTurnip) {
+        JsonObject json = new JsonObject();
+        json.addProperty("status", readyToTurnip);
+
+        try {
+            JsonObject result = postJson(API_URL + "/toggle", json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return false;
+    }
+
+    public static UserFeed feed() {
+        try {
+            JsonObject result = getJson(API_URL + "/feed");
+            if (result == null) return null;
+
+            Boolean status = result.get("status").getAsBoolean();
+            ArrayList<User> friends = new ArrayList<User>();
+
+            JsonArray jsonFriends = result.get("friends").getAsJsonArray();
+            for (int i = 0; i < jsonFriends.size(); i++) {
+                JsonObject obj = jsonFriends.getAsJsonObject();
+                User friend = new User(obj.get("name").getAsString(), 0, obj.get("profile_picture_id").getAsString(), obj.get("status").getAsBoolean());
+                friends.add(friend);
+            }
+            UserFeed uf = new UserFeed(status, friends);
+            return uf;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return null;
+    }
+
     public static Bitmap getImage(String file) throws MalformedURLException {
         Bitmap bmp = BitmapFactory.decodeStream(getHTTPBytes(STATIC_URL + "/" + file + ".jpg"));
         return bmp;
     }
 
-    private static JsonObject getJson(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-
+    private static JsonObject getJson(String urlString) {
         try {
+            URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("X-Access-Token", authkey);
             try {
