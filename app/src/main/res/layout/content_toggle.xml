@@ -50,5 +50,8 @@
         android:id="@+id/friends_toggle_list"
         android:layout_below="@+id/readiness"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:background="@color/white"
+        android:divider="#ccc"
+        android:dividerHeight="1dp" />
 </RelativeLayout>
