@@ -1,6 +1,7 @@
 package turnip.turnip;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -51,7 +52,9 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (success) {
-                           finish();
+                            Intent intent = new Intent(act, MainActivity.class);
+                            startActivity(intent);
+                            finish();
                         } else {
                             new AlertDialog.Builder(act)
                                 .setTitle("Could not sign up")
