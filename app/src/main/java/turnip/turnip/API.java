@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonWriter;
 
 import org.json.JSONException;
@@ -33,7 +34,7 @@ public class API {
     final static String TAG = "API";
     final static String API_URL = "http://databaseproject.jaxbot.me";
     final static String STATIC_URL = "http://espur.jaxbot.me/images/";
-    public static String authkey;
+    public static String authkey = "";
     static Context ctx = null;
 
     public static void init(Context ctx) {
@@ -95,6 +96,56 @@ public class API {
         return false;
     }
 
+    public static boolean setInterests(ArrayList<Integer> interests, ArrayList<Integer> antiInterests) {
+        JsonObject json = new JsonObject();
+        JsonArray interests_jsonArray = new JsonArray();
+        JsonArray antiInterests_jsonArray = new JsonArray();
+        for (int i = 0; i < interests.size(); i++) {
+            interests_jsonArray.add(new JsonPrimitive(interests.get(i)));
+        }
+        for (int i = 0; i < antiInterests.size(); i++) {
+            antiInterests_jsonArray.add(new JsonPrimitive(antiInterests.get(i)));
+        }
+        json.add("interests", interests_jsonArray);
+        json.add("anti_interests", antiInterests_jsonArray);
+
+        try {
+            JsonObject result = postJson(API_URL + "/interests", json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            return true;
+        } catch (JsonIOException e) {
+            System.out.println(e);
+            Log.e(TAG, e.toString());
+        }
+        return false;
+    }
+
+    public static UserFeed feed() {
+        try {
+            JsonObject result = getJson(API_URL + "/feed");
+            if (result == null) return null;
+
+            Boolean status = result.get("status").getAsBoolean();
+            ArrayList<User> friends = new ArrayList<User>();
+
+            JsonArray jsonFriends = result.get("friends").getAsJsonArray();
+            for (int i = 0; i < jsonFriends.size(); i++) {
+                JsonObject obj = jsonFriends.get(i).getAsJsonObject();
+                User friend = new User(obj.get("name").getAsString(), 0, obj.get("profile_picture_id").getAsString(), obj.get("status").getAsBoolean());
+                friends.add(friend);
+            }
+            UserFeed uf = new UserFeed(status, friends);
+            return uf;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return null;
+    }
+
     public static boolean toggle(Boolean readyToTurnip) {
         JsonObject json = new JsonObject();
         json.addProperty("status", readyToTurnip);
@@ -112,29 +163,6 @@ public class API {
         }
         return false;
     }
-
-    public static UserFeed feed() {
-        try {
-            JsonObject result = getJson(API_URL + "/feed");
-            if (result == null) return null;
-
-            Boolean status = result.get("status").getAsBoolean();
-            ArrayList<User> friends = new ArrayList<User>();
-
-            JsonArray jsonFriends = result.get("friends").getAsJsonArray();
-            for (int i = 0; i < jsonFriends.size(); i++) {
-                JsonObject obj = jsonFriends.getAsJsonObject();
-                User friend = new User(obj.get("name").getAsString(), 0, obj.get("profile_picture_id").getAsString(), obj.get("status").getAsBoolean());
-                friends.add(friend);
-            }
-            UserFeed uf = new UserFeed(status, friends);
-            return uf;
-        } catch (JsonIOException e) {
-            Log.e(TAG, e.toString());
-        }
-        return null;
-    }
-
     public static Bitmap getImage(String file) throws MalformedURLException {
         Bitmap bmp = BitmapFactory.decodeStream(getHTTPBytes(STATIC_URL + "/" + file + ".jpg"));
         return bmp;
@@ -207,6 +235,7 @@ public class API {
                 urlConnection.disconnect();
             }
         } catch (Exception e) {
+            System.out.println(e);
             Log.e(TAG, e.toString());
         }
 
