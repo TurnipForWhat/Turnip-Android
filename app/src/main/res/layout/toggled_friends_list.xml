@@ -10,8 +10,12 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="6dip"
+        android:maxWidth="64dip"
+        android:maxHeight="64dip"
+        android:minWidth="64dip"
         android:contentDescription="TODO"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher"
+        android:adjustViewBounds="true" />
 
     <TextView
         android:id="@+id/status"
