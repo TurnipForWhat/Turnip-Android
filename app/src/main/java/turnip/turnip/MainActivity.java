@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
         final Context context = this;
         API.init(context);
-
         Intent intent = new Intent(this, RegistrationIntentService.class);
         startService(intent);
 
@@ -51,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        if (!API.authkey.equals("")) {
+            Intent i = new Intent(context, ToggleActivity.class);
+            startActivity(i);
+            finish();
+        }
 
     }
 
