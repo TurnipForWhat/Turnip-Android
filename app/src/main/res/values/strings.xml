@@ -77,9 +77,15 @@
     <string name="title_activity_toggle">ToggleActivity</string>
     <string name="notReadyTurnip">Not ready to turn up</string>
     <string name="readyTurnip">🔥🔥🔥for the next 6 hours</string>
+<<<<<<< HEAD
     <string name="title_activity_settings_page">SettingsPageActivity</string>
     <string name="settingsTitle">Settings</string>
     <string name="privacySettings">Privacy Settings</string>
     <string name="title_activity_settings_main">SettingsMainActivity</string>
     <string name="settingsMain">Settings</string>
+=======
+    <string name="loginError">Incorrect email or password</string>
+    <string name="couldNotLogIn">Could not log in</string>
+    <string name="okay">Okay</string>
+>>>>>>> master
 </resources>

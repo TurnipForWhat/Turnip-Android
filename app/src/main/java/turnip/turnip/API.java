@@ -7,10 +7,12 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonWriter;
 
 import org.json.JSONException;
@@ -19,6 +21,8 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -26,12 +30,13 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class API {
     final static String TAG = "API";
     final static String API_URL = "http://databaseproject.jaxbot.me";
-    final static String STATIC_URL = "http://espur.jaxbot.me/images/";
-    static String authkey;
+    final static String STATIC_URL = "http://databaseproject.jaxbot.me";
+    public static String authkey = "";
     static Context ctx = null;
 
     public static void init(Context ctx) {
@@ -76,7 +81,7 @@ public class API {
         json.addProperty("password", password);
 
         try {
-            JsonObject result = postJson(API_URL + "/signup", json);
+            JsonObject result = postJson(API_URL + "/login", json);
             if (result == null) return false;
 
             if (!result.get("success").getAsBoolean())
@@ -93,15 +98,83 @@ public class API {
         return false;
     }
 
+    public static boolean setInterests(ArrayList<Integer> interests, ArrayList<Integer> antiInterests) {
+        JsonObject json = new JsonObject();
+        JsonArray interests_jsonArray = new JsonArray();
+        JsonArray antiInterests_jsonArray = new JsonArray();
+        for (int i = 0; i < interests.size(); i++) {
+            interests_jsonArray.add(new JsonPrimitive(interests.get(i)));
+        }
+        for (int i = 0; i < antiInterests.size(); i++) {
+            antiInterests_jsonArray.add(new JsonPrimitive(antiInterests.get(i)));
+        }
+        json.add("interests", interests_jsonArray);
+        json.add("anti_interests", antiInterests_jsonArray);
+
+        try {
+            JsonObject result = postJson(API_URL + "/interests", json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            return true;
+        } catch (JsonIOException e) {
+            System.out.println(e);
+            Log.e(TAG, e.toString());
+        }
+        return false;
+    }
+
+    public static UserFeed feed() {
+        try {
+            JsonObject result = getJson(API_URL + "/feed");
+            if (result == null) return null;
+
+            Boolean status = result.get("status").getAsBoolean();
+            ArrayList<User> friends = new ArrayList<User>();
+
+            JsonArray jsonFriends = result.get("friends").getAsJsonArray();
+            for (int i = 0; i < jsonFriends.size(); i++) {
+                JsonObject obj = jsonFriends.get(i).getAsJsonObject();
+                User friend = new User(obj.get("name").getAsString(), 0, obj.get("profile_picture_id").getAsString(), obj.get("status").getAsBoolean());
+                friends.add(friend);
+            }
+            UserFeed uf = new UserFeed(status, friends);
+            return uf;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return null;
+    }
+
+    public static boolean toggle(Boolean readyToTurnip) {
+        JsonObject json = new JsonObject();
+        json.addProperty("status", readyToTurnip);
+
+        try {
+            JsonObject result = postJson(API_URL + "/toggle", json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return false;
+    }
     public static Bitmap getImage(String file) throws MalformedURLException {
-        Bitmap bmp = BitmapFactory.decodeStream(getHTTPBytes(STATIC_URL + "/" + file + ".jpg"));
+        Log.i(TAG, "Get image" + file);
+        byte[] bytes = getHTTPBytes(STATIC_URL + "/" + file + ".jpg");
+        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         return bmp;
     }
 
-    private static JsonObject getJson(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-
+    private static JsonObject getJson(String urlString) {
         try {
+            URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("X-Access-Token", authkey);
             try {
@@ -119,7 +192,8 @@ public class API {
         return null;
     }
 
-    private static InputStream getHTTPBytes(String urlString) throws MalformedURLException {
+    private static byte[] getHTTPBytes(String urlString) throws MalformedURLException {
+        Log.i(TAG, urlString);
         URL url = new URL(urlString);
 
         try {
@@ -128,7 +202,7 @@ public class API {
 
             try {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                return in;
+                return getBytesFromInputStream(in);
             } finally {
                 urlConnection.disconnect();
             }
@@ -138,6 +212,21 @@ public class API {
         System.out.println(url);
 
         return null;
+    }
+
+    public static byte[] getBytesFromInputStream(InputStream is) throws IOException
+    {
+        try (ByteArrayOutputStream os = new ByteArrayOutputStream();)
+        {
+            byte[] buffer = new byte[0xFFFF];
+
+            for (int len; (len = is.read(buffer)) != -1;)
+                os.write(buffer, 0, len);
+
+            os.flush();
+
+            return os.toByteArray();
+        }
     }
 
     private static JsonObject postJson(String urlString, JsonObject json) {
@@ -166,6 +255,7 @@ public class API {
                 urlConnection.disconnect();
             }
         } catch (Exception e) {
+            System.out.println(e);
             Log.e(TAG, e.toString());
         }
 
