@@ -1,6 +1,10 @@
 package turnip.turnip;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,26 +16,51 @@ import java.util.ArrayList;
 
 public class ToggleFriendsAdapter extends ArrayAdapter<String> {
     private final Context context;
+    private final Activity activity;
     private final ArrayList<User> friends;
 
-    public ToggleFriendsAdapter(Context context, ArrayList<User> friends) {
-        super(context, -1, User.friendNames(friends));
-        this.context = context;
+    public ToggleFriendsAdapter(Activity activity, ArrayList<User> friends) {
+        super(activity, -1, User.friendNames(friends));
+        this.context = activity;
         this.friends = friends;
+        this.activity = activity;
         System.out.println(this.friends);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View toggledFriendsList = inflater.inflate(R.layout.toggled_friends_list, parent, false);
+        final View toggledFriendsList = inflater.inflate(R.layout.toggled_friends_list, parent, false);
         TextView name = (TextView) toggledFriendsList.findViewById(R.id.name);
         TextView status = (TextView) toggledFriendsList.findViewById(R.id.status);
-        ImageView imageView = (ImageView) toggledFriendsList.findViewById(R.id.icon);
+        final ImageView imageView = (ImageView) toggledFriendsList.findViewById(R.id.icon);
         name.setText(friends.get(position).name);
         status.setText(friends.get(position).getTurnipStatus());
-        imageView.setImageResource(R.drawable.ic_launcher);
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                Log.i("Tag", "Loading image");
+
+                try {
+                    final Bitmap bmp = API.getImage(friends.get(position).profile_picture_id);
+                    Log.i("Tag", "bmppp");
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageView.setImageBitmap(bmp);
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.i("Tag", "failed!");
+                    Log.i("Tag", e.toString());
+                    System.out.println(e);
+                }
+
+                return null;
+            }
+        }.execute(null, null, null);
 
         return toggledFriendsList;
     }

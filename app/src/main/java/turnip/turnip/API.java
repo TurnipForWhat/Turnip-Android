@@ -21,6 +21,8 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -33,7 +35,7 @@ import java.util.ArrayList;
 public class API {
     final static String TAG = "API";
     final static String API_URL = "http://databaseproject.jaxbot.me";
-    final static String STATIC_URL = "http://espur.jaxbot.me/images/";
+    final static String STATIC_URL = "http://databaseproject.jaxbot.me";
     public static String authkey = "";
     static Context ctx = null;
 
@@ -164,7 +166,9 @@ public class API {
         return false;
     }
     public static Bitmap getImage(String file) throws MalformedURLException {
-        Bitmap bmp = BitmapFactory.decodeStream(getHTTPBytes(STATIC_URL + "/" + file + ".jpg"));
+        Log.i(TAG, "Get image" + file);
+        byte[] bytes = getHTTPBytes(STATIC_URL + "/" + file + ".jpg");
+        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         return bmp;
     }
 
@@ -188,7 +192,8 @@ public class API {
         return null;
     }
 
-    private static InputStream getHTTPBytes(String urlString) throws MalformedURLException {
+    private static byte[] getHTTPBytes(String urlString) throws MalformedURLException {
+        Log.i(TAG, urlString);
         URL url = new URL(urlString);
 
         try {
@@ -197,7 +202,7 @@ public class API {
 
             try {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                return in;
+                return getBytesFromInputStream(in);
             } finally {
                 urlConnection.disconnect();
             }
@@ -207,6 +212,21 @@ public class API {
         System.out.println(url);
 
         return null;
+    }
+
+    public static byte[] getBytesFromInputStream(InputStream is) throws IOException
+    {
+        try (ByteArrayOutputStream os = new ByteArrayOutputStream();)
+        {
+            byte[] buffer = new byte[0xFFFF];
+
+            for (int len; (len = is.read(buffer)) != -1;)
+                os.write(buffer, 0, len);
+
+            os.flush();
+
+            return os.toByteArray();
+        }
     }
 
     private static JsonObject postJson(String urlString, JsonObject json) {
