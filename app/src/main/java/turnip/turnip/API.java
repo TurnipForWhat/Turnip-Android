@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonWriter;
 
 import org.json.JSONException;
@@ -33,7 +34,7 @@ public class API {
     final static String TAG = "API";
     final static String API_URL = "http://databaseproject.jaxbot.me";
     final static String STATIC_URL = "http://espur.jaxbot.me/images/";
-    public static String authkey;
+    public static String authkey = "";
     static Context ctx = null;
 
     public static void init(Context ctx) {
@@ -95,12 +96,21 @@ public class API {
         return false;
     }
 
-    public static boolean toggle(Boolean readyToTurnip) {
+    public static boolean setInterests(ArrayList<Integer> interests, ArrayList<Integer> antiInterests) {
         JsonObject json = new JsonObject();
-        json.addProperty("status", readyToTurnip);
+        JsonArray interests_jsonArray = new JsonArray();
+        JsonArray antiInterests_jsonArray = new JsonArray();
+        for (int i = 0; i < interests.size(); i++) {
+            interests_jsonArray.add(new JsonPrimitive(interests.get(i)));
+        }
+        for (int i = 0; i < antiInterests.size(); i++) {
+            antiInterests_jsonArray.add(new JsonPrimitive(antiInterests.get(i)));
+        }
+        json.add("interests", interests_jsonArray);
+        json.add("anti_interests", antiInterests_jsonArray);
 
         try {
-            JsonObject result = postJson(API_URL + "/toggle", json);
+            JsonObject result = postJson(API_URL + "/interests", json);
             if (result == null) return false;
 
             if (!result.get("success").getAsBoolean())
@@ -108,6 +118,7 @@ public class API {
 
             return true;
         } catch (JsonIOException e) {
+            System.out.println(e);
             Log.e(TAG, e.toString());
         }
         return false;
@@ -135,6 +146,23 @@ public class API {
         return null;
     }
 
+    public static boolean toggle(Boolean readyToTurnip) {
+        JsonObject json = new JsonObject();
+        json.addProperty("status", readyToTurnip);
+
+        try {
+            JsonObject result = postJson(API_URL + "/toggle", json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return false;
+    }
     public static Bitmap getImage(String file) throws MalformedURLException {
         Bitmap bmp = BitmapFactory.decodeStream(getHTTPBytes(STATIC_URL + "/" + file + ".jpg"));
         return bmp;
@@ -207,6 +235,7 @@ public class API {
                 urlConnection.disconnect();
             }
         } catch (Exception e) {
+            System.out.println(e);
             Log.e(TAG, e.toString());
         }
 

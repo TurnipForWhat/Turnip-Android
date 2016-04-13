@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
         final Context context = this;
         API.init(context);
 
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
+
 
         TextView signUp= (TextView) findViewById(R.id.signUp);
         signUp.setOnClickListener(new View.OnClickListener() {
