@@ -23,6 +23,7 @@ public class ToggleActivity extends AppCompatActivity {
         assert s != null;
         s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setStatus(isChecked);
             }
         });
     }
@@ -36,6 +37,9 @@ public class ToggleActivity extends AppCompatActivity {
                 act.runOnUiThread(new Runnable() {
                     public void run() {
                         assert feed != null;
+                        Switch s = (Switch) findViewById(R.id.turnipToggle);
+                        assert s != null;
+                        s.setChecked(feed.status);
                         setStatus(feed.status);
                         fillFeed(feed.friends);
                     }
@@ -54,6 +58,15 @@ public class ToggleActivity extends AppCompatActivity {
             assert readiness != null;
             readiness.setText(this.getResources().getString(R.string.notReadyTurnip));
         }
+
+        new AsyncTask<Void, Void, Void>() {
+
+            protected Void doInBackground(Void... params) {
+                API.toggle(status);
+                return null;
+            }
+        }.execute(null, null, null);
+
     }
 
     void fillFeed(ArrayList<User> friends) {
