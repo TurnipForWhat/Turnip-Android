@@ -8,16 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class ToggleFriendsAdapter extends ArrayAdapter<String> {
     private final Context context;
-    private final String[] names;
-    private final String[] statuses;
+    private final ArrayList<User> friends;
 
-    public ToggleFriendsAdapter(Context context, String[] names, String[] statuses) {
-        super(context, -1, names);
+    public ToggleFriendsAdapter(Context context, ArrayList<User> friends) {
+        super(context, -1, User.friendNames(friends));
         this.context = context;
-        this.names = names;
-        this.statuses = statuses;
+        this.friends = friends;
+        System.out.println(this.friends);
     }
 
     @Override
@@ -25,11 +26,11 @@ public class ToggleFriendsAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View toggledFriendsList = inflater.inflate(R.layout.toggled_friends_list, parent, false);
-        TextView textView = (TextView) toggledFriendsList.findViewById(R.id.name);
-        TextView textView2 = (TextView) toggledFriendsList.findViewById(R.id.status);
+        TextView name = (TextView) toggledFriendsList.findViewById(R.id.name);
+        TextView status = (TextView) toggledFriendsList.findViewById(R.id.status);
         ImageView imageView = (ImageView) toggledFriendsList.findViewById(R.id.icon);
-        textView.setText(names[position]);
-        textView2.setText(statuses[position]);
+        name.setText(friends.get(position).name);
+        status.setText(friends.get(position).getTurnipStatus());
         imageView.setImageResource(R.drawable.ic_launcher);
 
         return toggledFriendsList;

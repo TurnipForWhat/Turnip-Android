@@ -1,5 +1,7 @@
 package turnip.turnip;
 
+import java.util.ArrayList;
+
 /**
  * Created by jaxbot on 4/7/16.
  */
@@ -14,5 +16,26 @@ public class User {
         this.id = id;
         this.profile_picture_id = profile_picture_id;
         this.status = status;
+    }
+
+    public String toString() {
+        return this.name;
+    }
+
+    public static ArrayList<String> friendNames(ArrayList<User> users) {
+        ArrayList<String> names = new ArrayList<>();
+        for (int i = 0; i < users.size(); i++) {
+            names.add(users.get(i).name);
+        }
+
+        return names;
+    }
+
+    public String getTurnipStatus() {
+        if (this.status) {
+            return "Ready to turn up";
+        } else {
+            return "Not ready to turn up";
+        }
     }
 }
