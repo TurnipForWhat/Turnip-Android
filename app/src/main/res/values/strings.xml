@@ -77,4 +77,9 @@
     <string name="title_activity_toggle">ToggleActivity</string>
     <string name="notReadyTurnip">Not ready to turn up</string>
     <string name="readyTurnip">🔥🔥🔥for the next 6 hours</string>
+    <string name="title_activity_settings_page">SettingsPageActivity</string>
+    <string name="settingsTitle">Settings</string>
+    <string name="privacySettings">Privacy Settings</string>
+    <string name="title_activity_settings_main">SettingsMainActivity</string>
+    <string name="settingsMain">Settings</string>
 </resources>
