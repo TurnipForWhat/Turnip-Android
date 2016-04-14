@@ -3,6 +3,7 @@ package turnip.turnip;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,11 @@ public class SearchAdapter extends ArrayAdapter<String> {
         final ImageView imageView = (ImageView) searchResults.findViewById(R.id.icon);
         name.setText(results.get(position).name);
         final Button addButton = (Button) searchResults.findViewById(R.id.addFriendButton);
+        if (results.get(position).getIs_friend()) {
+            addButton.setText("Friends");
+            addButton.setEnabled(false);
+            addButton.setBackgroundColor(Color.parseColor("#aaaaaa"));
+        }
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -10,6 +10,7 @@ public class User {
     public int id;
     public String profile_picture_id;
     public Boolean status;
+    private Boolean is_friend;
 
     User(String name, int id, String profile_picture_id, Boolean status) {
         this.name = name;
@@ -37,5 +38,13 @@ public class User {
         } else {
             return "Not ready to turn up";
         }
+    }
+
+    public Boolean getIs_friend() {
+        return is_friend;
+    }
+
+    public void setIs_friend(Boolean is_friend) {
+        this.is_friend = is_friend;
     }
 }
