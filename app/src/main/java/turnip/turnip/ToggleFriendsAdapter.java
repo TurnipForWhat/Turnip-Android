@@ -2,6 +2,7 @@ package turnip.turnip;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -38,6 +39,15 @@ public class ToggleFriendsAdapter extends ArrayAdapter<String> {
         name.setText(friends.get(position).name);
         assert status != null;
         status.setText(friends.get(position).getTurnipStatus());
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, WebViewChat.class);
+                i.putExtra("with", String.valueOf(friends.get(position).id));
+                context.startActivity(i);
+            }
+        });
 
         new AsyncTask<Void, Void, Void>() {
             @Override
