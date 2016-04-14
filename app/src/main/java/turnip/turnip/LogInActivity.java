@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class LogInActivity extends AppCompatActivity {
 
@@ -17,6 +18,8 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+
+        final Context context = this;
 
         Button button = (Button) findViewById(R.id.logInButton);
 
@@ -32,6 +35,16 @@ public class LogInActivity extends AppCompatActivity {
                 String password = txtPassword.getText().toString();
 
                 logIn(email, password);
+            }
+        });
+
+        TextView signup = (TextView) findViewById(R.id.sign_up);
+        assert signup != null;
+        signup.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(context, SignUpActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
