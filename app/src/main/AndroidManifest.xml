@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="turnip.turnip">
 
-    <permission android:name="turnip.turnip.permission.C2D_MESSAGE"
+    <permission
+        android:name="turnip.turnip.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="turnip.turnip.permission.C2D_MESSAGE" />
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,9 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
         <activity
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up"
@@ -50,37 +51,47 @@
             android:label="@string/title_activity_settings_main"
             android:theme="@style/AppTheme" />
 
-
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="turnip.turnip.gcm" />
             </intent-filter>
         </receiver>
+
         <service
-            android:name="turnip.turnip.MyGcmListenerService"
-            android:exported="false" >
+            android:name=".MyGcmListenerService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
         <service
-            android:name="turnip.turnip.RegistrationIntentService"
-            android:exported="false" >
+            android:name=".RegistrationIntentService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
         <service
-            android:name="turnip.turnip.MyInstanceIDListenerService"
+            android:name=".MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".PopUpTagActivity"
+            android:label="@string/title_activity_pop_up_tag"
+            android:theme="@style/AppTheme"></activity>
+
+        <activity android:name=".Pop"
+            android:theme="@style/AppTheme.CustomTheme"
+            ></activity>
     </application>
 
 </manifest>

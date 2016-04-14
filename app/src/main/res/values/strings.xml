@@ -85,4 +85,5 @@
     <string name="loginError">Incorrect email or password</string>
     <string name="couldNotLogIn">Could not log in</string>
     <string name="okay">Okay</string>
+    <string name="title_activity_pop_up_tag">PopUpTagActivity</string>
 </resources>

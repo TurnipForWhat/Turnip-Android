@@ -54,4 +54,13 @@
         android:background="@color/white"
         android:divider="#ccc"
         android:dividerHeight="1dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:text="Tags"
+        android:id="@+id/TagsPopUp"
+        android:layout_below="@+id/turnipToggle"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
