@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -63,6 +63,17 @@ public class ToggleActivity extends AppCompatActivity {
                     }
                 });
                 popup.show();
+            }
+        });
+
+        ListView friends = (ListView) findViewById(R.id.friends_toggle_list);
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        assert swipeRefreshLayout != null;
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getFeed();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
