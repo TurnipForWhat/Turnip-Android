@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/noAccountSignUp"
-        android:id="@+id/textView3"
+        android:id="@+id/sign_up"
         android:textColor="@color/white"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:text="@string/logIn"
         android:id="@+id/logInButton"
-        android:layout_above="@+id/textView3"
+        android:layout_above="@+id/sign_up"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:background="@color/turnipDarkPurple" />

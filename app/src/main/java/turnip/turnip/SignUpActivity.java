@@ -1,6 +1,7 @@
 package turnip.turnip;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,10 +21,11 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        final Context context = this;
 
         Button signUp = (Button) findViewById(R.id.signUpButton);
+        assert signUp != null;
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,6 +38,16 @@ public class SignUpActivity extends AppCompatActivity {
                 String password = txtPassword.getText().toString();
 
                 signUp(name, email, password);
+            }
+        });
+
+        TextView signIn = (TextView) findViewById(R.id.sign_in);
+        assert signIn != null;
+        signIn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(context, LogInActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
