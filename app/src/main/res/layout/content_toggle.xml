@@ -12,7 +12,7 @@
     android:padding="0dp">
 
     <Switch
-        android:id="@+id/turnipToggle"
+        android:id="@+id/turnip_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOn="ON"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:text="@string/notReadyTurnip"
         android:id="@+id/readiness"
-        android:layout_below="@+id/turnipToggle"
+        android:layout_below="@+id/turnip_toggle"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp" />
 

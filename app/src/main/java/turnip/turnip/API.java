@@ -300,5 +300,30 @@ public class API {
         editor.apply();
     }
 
+    public static ArrayList<User> search(String query) {
+        try {
+            JsonObject result = getJson(API_URL + "/search?q=" + query);
+            if (result == null) return null;
+
+            ArrayList<User> results = new ArrayList<User>();
+            System.out.println("lawl2");
+            JsonArray jsonResults = result.get("results").getAsJsonArray();
+            System.out.println("lawl");
+
+            for (int i = 0; i < jsonResults.size(); i++) {
+                JsonObject obj = jsonResults.get(i).getAsJsonObject();
+                User friend = new User(obj.get("name").getAsString(), obj.get("id").getAsInt(), obj.get("profile_picture_id").getAsString(), false);
+                results.add(friend);
+            }
+            Log.i(TAG, results.toString());
+            System.out.println(results);
+            System.out.println("took");
+            return results;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return null;
+    }
+
 }
 
