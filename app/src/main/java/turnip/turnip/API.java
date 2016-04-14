@@ -137,7 +137,7 @@ public class API {
             JsonArray jsonFriends = result.get("friends").getAsJsonArray();
             for (int i = 0; i < jsonFriends.size(); i++) {
                 JsonObject obj = jsonFriends.get(i).getAsJsonObject();
-                User friend = new User(obj.get("name").getAsString(), 0, obj.get("profile_picture_id").getAsString(), obj.get("status").getAsBoolean());
+                User friend = new User(obj.get("name").getAsString(), obj.get("id").getAsInt(), obj.get("profile_picture_id").getAsString(), obj.get("status").getAsBoolean());
                 friends.add(friend);
             }
             UserFeed uf = new UserFeed(status, friends);
