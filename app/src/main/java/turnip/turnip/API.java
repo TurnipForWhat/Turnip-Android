@@ -196,6 +196,26 @@ public class API {
         return null;
     }
 
+    public static boolean saveGMSToken(String token) {
+        if (authkey.equals("")) return false;
+
+        JsonObject json = new JsonObject();
+        json.addProperty("token", token);
+
+        try {
+            JsonObject result = postJson(API_URL + "/gms", json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return false;
+    }
+
     public static boolean toggle(Boolean readyToTurnip) {
         JsonObject json = new JsonObject();
         json.addProperty("status", readyToTurnip);

@@ -4,11 +4,14 @@ package turnip.turnip;
  * Created by jaxbot on 4/11/16.
  */
 
+import android.app.Notification;
 import android.app.NotificationManager;
         import android.app.PendingIntent;
         import android.content.Context;
         import android.content.Intent;
-        import android.media.RingtoneManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.RingtoneManager;
         import android.net.Uri;
         import android.os.Bundle;
         import android.support.v4.app.NotificationCompat;
@@ -68,12 +71,14 @@ public class MyGcmListenerService extends GcmListenerService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-                .setContentTitle("GCM Message")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(bm)
+                .setContentTitle("Turnip")
+                .setPriority(Notification.PRIORITY_MAX)
                 .setContentText(message)
-                .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
