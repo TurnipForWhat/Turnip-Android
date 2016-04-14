@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -19,6 +20,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class ToggleActivity extends AppCompatActivity {
+    static final String TAG = "ToggleActivity";
+
+    private boolean ignoreInput = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +37,8 @@ public class ToggleActivity extends AppCompatActivity {
         assert s != null;
         s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (ignoreInput) return;
+                setUIStatus(isChecked);
                 setStatus(isChecked);
             }
         });
@@ -81,7 +88,6 @@ public class ToggleActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 getFeed();
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -98,9 +104,14 @@ public class ToggleActivity extends AppCompatActivity {
                         assert feed != null;
                         Switch s = (Switch) findViewById(R.id.turnip_toggle);
                         assert s != null;
+                        ignoreInput = true;
                         s.setChecked(feed.status);
-                        setStatus(feed.status);
+                        ignoreInput = false;
+                        setUIStatus(feed.status);
                         fillFeed(feed.friends);
+                        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+                        assert swipeRefreshLayout != null;
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
                 return null;
@@ -108,7 +119,7 @@ public class ToggleActivity extends AppCompatActivity {
         }.execute(null, null, null);
     }
 
-    void setStatus(final Boolean status) {
+    void setUIStatus(final Boolean status) {
         TextView readiness = (TextView) findViewById(R.id.readiness);
         if (status) {
             assert readiness != null;
@@ -117,10 +128,13 @@ public class ToggleActivity extends AppCompatActivity {
             assert readiness != null;
             readiness.setText(this.getResources().getString(R.string.notReadyTurnip));
         }
+    }
 
+    void setStatus(final Boolean status) {
         new AsyncTask<Void, Void, Void>() {
 
             protected Void doInBackground(Void... params) {
+                Log.i(TAG, "Updating toggled status");
                 API.toggle(status);
                 return null;
             }
