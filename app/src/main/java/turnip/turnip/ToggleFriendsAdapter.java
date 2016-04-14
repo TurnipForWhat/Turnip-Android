@@ -39,7 +39,7 @@ public class ToggleFriendsAdapter extends ArrayAdapter<String> {
         name.setText(friends.get(position).name);
         status.setText(friends.get(position).getTurnipStatus());
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        toggledFriendsList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, WebViewChat.class);
