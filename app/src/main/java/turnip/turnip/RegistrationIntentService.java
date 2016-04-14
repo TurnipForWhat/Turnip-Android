@@ -73,6 +73,7 @@ public class RegistrationIntentService extends IntentService {
     private void sendRegistrationToServer(String token) {
         // Add custom implementation, as needed.
         Log.e(TAG, token);
+        API.saveGMSToken(token);
     }
 
     /**
