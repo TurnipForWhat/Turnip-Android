@@ -29,5 +29,19 @@
         android:text="Example application"
         android:textSize="20sp"
         android:textColor="#000"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:singleLine="false"
+        android:ellipsize="end"
+        android:maxLines="1" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:text="Add Friend"
+        android:id="@+id/button3"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/turnipPurple"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
 </RelativeLayout>

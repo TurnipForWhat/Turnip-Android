@@ -36,6 +36,7 @@ public class ToggleFriendsAdapter extends ArrayAdapter<String> {
         TextView status = (TextView) toggledFriendsList.findViewById(R.id.status);
         final ImageView imageView = (ImageView) toggledFriendsList.findViewById(R.id.icon);
         name.setText(friends.get(position).name);
+        assert status != null;
         status.setText(friends.get(position).getTurnipStatus());
 
         new AsyncTask<Void, Void, Void>() {
