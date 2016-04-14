@@ -53,7 +53,10 @@ public class ToggleActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 break;
                             default:
-                                Log.i("clicked", "log out");
+                                API.signOut();
+                                Intent signOutIntent = new Intent(context, MainActivity.class);
+                                startActivity(signOutIntent);
+                                finish();
                                 break;
                         }
                         return true;
