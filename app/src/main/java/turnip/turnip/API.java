@@ -197,8 +197,15 @@ public class API {
         try {
             JsonObject result = getJson(API_URL + "/feed");
             if (result == null) return null;
-
-            Boolean status = result.get("status").getAsBoolean();
+            Boolean status;
+            try {
+                status = result.get("status").getAsBoolean();
+            } catch (Exception e) {
+                // The user is not really logged in
+                authkey = "";
+                saveAuthkey();
+                return new UserFeed(false, new ArrayList<User>());
+            }
             ArrayList<User> friends = new ArrayList<User>();
 
             JsonArray jsonFriends = result.get("friends").getAsJsonArray();
