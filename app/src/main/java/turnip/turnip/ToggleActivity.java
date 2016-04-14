@@ -25,7 +25,7 @@ public class ToggleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_toggle);
         final Context context = this;
 
-        Switch s = (Switch) findViewById(R.id.turnipToggle);
+        Switch s = (Switch) findViewById(R.id.turnip_toggle);
 
         getFeed();
 
@@ -48,6 +48,10 @@ public class ToggleActivity extends AppCompatActivity {
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getTitle().toString()) {
+                            case ("Search"):
+                                Intent searchIntent = new Intent(context, SearchActivity.class);
+                                startActivity(searchIntent);
+                                break;
                             case ("Settings"):
                                 Intent intent = new Intent(context, SettingsMainActivity.class);
                                 startActivity(intent);
@@ -87,7 +91,7 @@ public class ToggleActivity extends AppCompatActivity {
                 act.runOnUiThread(new Runnable() {
                     public void run() {
                         assert feed != null;
-                        Switch s = (Switch) findViewById(R.id.turnipToggle);
+                        Switch s = (Switch) findViewById(R.id.turnip_toggle);
                         assert s != null;
                         s.setChecked(feed.status);
                         setStatus(feed.status);

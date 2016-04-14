@@ -86,6 +86,7 @@
     <string name="loginError">Incorrect email or password</string>
     <string name="couldNotLogIn">Could not log in</string>
     <string name="okay">Okay</string>
+    <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_web_view_chat">WebViewChat</string>
     <string name="title_activity_web_chat">WebChat</string>
 </resources>
