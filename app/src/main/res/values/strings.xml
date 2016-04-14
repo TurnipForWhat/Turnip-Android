@@ -89,4 +89,5 @@
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_web_view_chat">WebViewChat</string>
     <string name="title_activity_web_chat">WebChat</string>
+    <string name="title_activity_friend_request">FriendRequestActivity</string>
 </resources>

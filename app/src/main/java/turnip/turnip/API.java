@@ -174,6 +174,25 @@ public class API {
         return false;
     }
 
+    public static ArrayList<User> friendRequests() {
+        try {
+            ArrayList<User> friends = new ArrayList<User>();
+            JsonObject result = getJson(API_URL + "/friend/request");
+            if (result == null) return friends;
+
+            JsonArray jsonFriends = result.get("results").getAsJsonArray();
+            for (int i = 0; i < jsonFriends.size(); i++) {
+                JsonObject obj = jsonFriends.get(i).getAsJsonObject();
+                User friend = new User(obj.get("name").getAsString(), obj.get("id").getAsInt(), obj.get("profile_picture_id").getAsString(), false);
+                friends.add(friend);
+            }
+            return friends;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return null;
+    }
+
     public static UserFeed feed() {
         try {
             JsonObject result = getJson(API_URL + "/feed");
@@ -194,6 +213,44 @@ public class API {
             Log.e(TAG, e.toString());
         }
         return null;
+    }
+
+    public static boolean sendFriendRequest(int id) {
+        if (authkey.equals("")) return false;
+
+        JsonObject json = new JsonObject();
+
+        try {
+            JsonObject result = postJson(API_URL + "/friend/request/" + id, json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return false;
+    }
+
+    public static boolean acceptFriendRequest(int id) {
+        if (authkey.equals("")) return false;
+
+        JsonObject json = new JsonObject();
+
+        try {
+            JsonObject result = postJson(API_URL + "/friend/request/" + id + "/accept", json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return false;
     }
 
     public static boolean saveGMSToken(String token) {

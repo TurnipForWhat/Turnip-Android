@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="turnip.turnip.FriendRequestActivity"
+    android:background="@color/turnipPurple"
+    android:padding="0dp"
+    tools:showIn="@layout/activity_friend_request">
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/friend_request_list"
+        android:layout_alignParentStart="true"
+        android:background="@color/white"
+        android:divider="#ccc"
+        android:dividerHeight="1dp"
+        android:layout_marginTop="20dp" />
+
+</RelativeLayout>
