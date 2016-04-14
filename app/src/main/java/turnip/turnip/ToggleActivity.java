@@ -1,11 +1,14 @@
 package turnip.turnip;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -20,6 +23,8 @@ public class ToggleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toggle);
+        final Context context = this;
+
         Switch s = (Switch) findViewById(R.id.turnipToggle);
 
         getFeed();
@@ -40,6 +45,20 @@ public class ToggleActivity extends AppCompatActivity {
                 PopupMenu popup = new PopupMenu(ToggleActivity.this, settings);
                 popup.getMenuInflater()
                         .inflate(R.menu.settings_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getTitle().toString()) {
+                            case ("Settings"):
+                                Intent intent = new Intent(context, SettingsMainActivity.class);
+                                startActivity(intent);
+                                break;
+                            default:
+                                Log.i("clicked", "log out");
+                                break;
+                        }
+                        return true;
+                    }
+                });
                 popup.show();
             }
         });
