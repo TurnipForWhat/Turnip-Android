@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/loginWithFacebook"
-        android:id="@+id/button"
+        android:id="@+id/logInFacebook"
         android:background="@color/facebookBlue"
         android:textColor="#FFFFFF"
         android:padding="20dp"

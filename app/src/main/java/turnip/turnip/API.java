@@ -50,6 +50,54 @@ public class API {
         saveAuthkey();
     }
 
+    public static boolean signUpWithFacebook(String id, String name, String email) {
+        JsonObject json = new JsonObject();
+        json.addProperty("name", name);
+        json.addProperty("fbid", id);
+        json.addProperty("email", email);
+
+        JsonObject result = postJson(API_URL + "/signup", json);
+        if (result == null) return false;
+
+        try {
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            // We're good!
+            authkey = result.get("login_token").getAsString();
+            saveAuthkey();
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, "createUser failed to find success");
+            return false;
+        }
+
+    }
+
+    // Yes, I know this is hella vulnerable. It's for a class™
+    public static boolean loginWithFacebook(String facebook_id) {
+        JsonObject json = new JsonObject();
+        json.addProperty("facebook_id", facebook_id);
+
+        try {
+            JsonObject result = postJson(API_URL + "/login/facebook", json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            // We're good!
+            authkey = result.get("login_token").getAsString();
+            saveAuthkey();
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return false;
+    }
+
     public static boolean createUser(String username, String password, String email) {
         JsonObject json = new JsonObject();
         json.addProperty("name", username);
@@ -174,13 +222,16 @@ public class API {
 
     private static JsonObject getJson(String urlString) {
         try {
+            System.out.println(urlString);
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("X-Access-Token", authkey);
             try {
+                System.out.println("mental errors");
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JsonParser jsonParser = new JsonParser();
                 JsonObject jsonObject = (JsonObject) jsonParser.parse(new InputStreamReader(in, "UTF-8"));
+                System.out.println("mental errors2");
                 return jsonObject;
             } finally {
                 urlConnection.disconnect();
