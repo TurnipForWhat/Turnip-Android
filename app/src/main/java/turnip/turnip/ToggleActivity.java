@@ -1,10 +1,17 @@
 package turnip.turnip;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -16,6 +23,8 @@ public class ToggleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toggle);
+        final Context context = this;
+
         Switch s = (Switch) findViewById(R.id.turnipToggle);
 
         getFeed();
@@ -24,6 +33,36 @@ public class ToggleActivity extends AppCompatActivity {
         s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setStatus(isChecked);
+            }
+        });
+
+        final ImageButton settings = (ImageButton) findViewById(R.id.settingsButton);
+
+        assert settings != null;
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(ToggleActivity.this, settings);
+                popup.getMenuInflater()
+                        .inflate(R.menu.settings_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getTitle().toString()) {
+                            case ("Settings"):
+                                Intent intent = new Intent(context, SettingsMainActivity.class);
+                                startActivity(intent);
+                                break;
+                            default:
+                                API.signOut();
+                                Intent signOutIntent = new Intent(context, MainActivity.class);
+                                startActivity(signOutIntent);
+                                finish();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                popup.show();
             }
         });
     }
