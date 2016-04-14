@@ -5,6 +5,10 @@
         android:title="Search"/>
 
     <item
+        android:id="@+id/friendRequestsItem"
+        android:title="Friend Requests"/>
+
+    <item
         android:id="@+id/settingsItem"
         android:title="Settings"/>
 

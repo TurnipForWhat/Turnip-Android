@@ -56,6 +56,10 @@ public class ToggleActivity extends AppCompatActivity {
                                 Intent intent = new Intent(context, SettingsMainActivity.class);
                                 startActivity(intent);
                                 break;
+                            case ("Friend Requests"):
+                                Intent friendRequests = new Intent(context, FriendRequestActivity.class);
+                                startActivity(friendRequests);
+                                break;
                             default:
                                 API.signOut();
                                 Intent signOutIntent = new Intent(context, MainActivity.class);
@@ -88,6 +92,7 @@ public class ToggleActivity extends AppCompatActivity {
         new AsyncTask<Void, Void, Void>() {
             protected Void doInBackground(Void... params) {
                 final UserFeed feed = API.feed();
+                System.out.println(API.friendRequests());
                 act.runOnUiThread(new Runnable() {
                     public void run() {
                         assert feed != null;
