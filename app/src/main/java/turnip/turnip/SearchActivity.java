@@ -53,9 +53,6 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    void search() {
-    }
-
     void getResults(final String query) {
         final Activity act = this;
 

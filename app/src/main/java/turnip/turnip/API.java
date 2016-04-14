@@ -8,19 +8,14 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonWriter;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -441,6 +436,7 @@ public class API {
             for (int i = 0; i < jsonResults.size(); i++) {
                 JsonObject obj = jsonResults.get(i).getAsJsonObject();
                 User friend = new User(obj.get("name").getAsString(), obj.get("id").getAsInt(), obj.get("profile_picture_id").getAsString(), false);
+                friend.setIs_friend(obj.get("isFriend").getAsBoolean());
                 results.add(friend);
             }
             Log.i(TAG, results.toString());
