@@ -26,6 +26,7 @@
         android:textColor="@color/turnipDarkPurple"
         android:textColorHint="@color/turnipDarkPurple"
         android:hint="Search"
+        android:singleLine="true"
         android:padding="10dp" />
 
     <Button
