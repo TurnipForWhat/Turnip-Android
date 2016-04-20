@@ -94,8 +94,19 @@
         android:text="Already have an account? Sign in."
         android:id="@+id/sign_in"
         android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
+        android:layout_above="@+id/thirt13"
+        android:textAlignment="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="By using Turnip, you agree that you are at least 13 years of age."
+        android:id="@+id/thirt13"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
         android:textAlignment="center" />
 </RelativeLayout>
