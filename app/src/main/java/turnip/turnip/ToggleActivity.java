@@ -30,6 +30,9 @@ public class ToggleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_toggle);
         final Context context = this;
 
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
+
         Switch s = (Switch) findViewById(R.id.turnip_toggle);
 
         getFeed();
