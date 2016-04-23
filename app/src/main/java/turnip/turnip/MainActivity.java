@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         final Context context = this;
         API.init(context);
-        Intent intent = new Intent(this, RegistrationIntentService.class);
-        startService(intent);
 
 
         TextView signUp= (TextView) findViewById(R.id.signUp);
@@ -72,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
+                System.out.println("yeazuy");
                 System.out.println(loginResult);
                 System.out.println(loginResult.getAccessToken().getUserId());
                 act.runOnUiThread(new Runnable() {
@@ -80,10 +79,12 @@ public class MainActivity extends AppCompatActivity {
                         GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
+                                System.out.println("newMeRequest finished");
                                 try {
                                     final String name = object.getString("name");
                                     final String email = object.getString("email");
                                     final String id = object.getString("id");
+                                    System.out.println(name);
 
                                     new AsyncTask<Void, Void, Void>() {
                                         protected Void doInBackground(Void... params) {
@@ -134,7 +135,8 @@ public class MainActivity extends AppCompatActivity {
         fbButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginManager.getInstance().logInWithReadPermissions(act, Arrays.asList("public_profile", "user_friends", "email"));
+                System.out.println("FO");
+                LoginManager.getInstance().logInWithReadPermissions(act, Arrays.asList("public_profile", "email"));
             }
         });
 
@@ -144,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
             finish();
         }
-
     }
 
     @Override
