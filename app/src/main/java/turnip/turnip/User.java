@@ -10,6 +10,7 @@ public class User {
     public int id;
     public String profile_picture_id;
     public Boolean status;
+    public String email;
     private Boolean is_friend;
 
     User(String name, int id, String profile_picture_id, Boolean status) {

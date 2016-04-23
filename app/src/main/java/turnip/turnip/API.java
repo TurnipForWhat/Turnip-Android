@@ -188,6 +188,40 @@ public class API {
         return null;
     }
 
+    public static User getMe() {
+        try {
+            JsonObject result = getJson(API_URL + "/profile");
+            if (result == null) return null;
+            User me = new User(result.get("name").getAsString(), result.get("id").getAsInt(), result.get("profile_picture_id").getAsString(), false);
+            me.email = result.get("email").getAsString();
+
+            return me;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return null;
+    }
+
+    public static boolean sendFriendRequest(int id) {
+        if (authkey.equals("")) return false;
+
+        JsonObject json = new JsonObject();
+
+        try {
+            JsonObject result = postJson(API_URL + "/friend/request/" + id, json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return false;
+    }
+
+
     public static UserFeed feed() {
         try {
             JsonObject result = getJson(API_URL + "/feed");
@@ -215,25 +249,6 @@ public class API {
             Log.e(TAG, e.toString());
         }
         return null;
-    }
-
-    public static boolean sendFriendRequest(int id) {
-        if (authkey.equals("")) return false;
-
-        JsonObject json = new JsonObject();
-
-        try {
-            JsonObject result = postJson(API_URL + "/friend/request/" + id, json);
-            if (result == null) return false;
-
-            if (!result.get("success").getAsBoolean())
-                return false;
-
-            return true;
-        } catch (JsonIOException e) {
-            Log.e(TAG, e.toString());
-        }
-        return false;
     }
 
     public static boolean acceptFriendRequest(int id) {
@@ -320,6 +335,26 @@ public class API {
         }
 
         return null;
+    }
+
+    public static boolean updateUserSettings(String name, String password, String email) {
+        JsonObject json = new JsonObject();
+        json.addProperty("name", name);
+        json.addProperty("password", password);
+        json.addProperty("email", email);
+
+        try {
+            JsonObject result = postJson(API_URL + "/profile", json);
+            if (result == null) return false;
+
+            if (!result.get("success").getAsBoolean())
+                return false;
+
+            return true;
+        } catch (JsonIOException e) {
+            Log.e(TAG, e.toString());
+        }
+        return false;
     }
 
     private static byte[] getHTTPBytes(String urlString) throws MalformedURLException {
